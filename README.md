@@ -97,9 +97,39 @@ REST API сервис для управления файлами в систем
 
 ## ▶️ Запуск проекта  
 
-```bash
-# Сборка и запуск
-docker compose up --build
+1.  **Создайте файл `.env`** в корневой директории проекта (`document_management_system/`) на основе содержимого `.env.example` (если он будет создан) или следующего шаблона:
+
+    ```
+    # PostgreSQL
+    POSTGRES_USER=user
+    POSTGRES_PASSWORD=password
+    POSTGRES_DB=file_management
+    DATABASE_URL=postgresql://user:password@db:5432/file_management
+
+    # MinIO
+    MINIO_ROOT_USER=minioadmin
+    MINIO_ROOT_PASSWORD=minioadmin
+    MINIO_ENDPOINT=minio:9000
+    MINIO_ACCESS_KEY=minioadmin
+    MINIO_SECRET_KEY=minioadmin
+    MINIO_BUCKET=files
+
+    # JWT
+    SECRET_KEY=your-secret-key
+    ALGORITHM=HS256
+    ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+    # Celery
+    CELERY_BROKER_URL=redis://redis:6379/0
+    CELERY_RESULT_BACKEND=redis://redis:6379/0
+    ```
+    **Важно:** Если порт 5432 занят на вашей системе, измените его в файле `docker-compose.yml` (например, на `5433:5432`) и обновите `DATABASE_URL` в `.env` соответствующим образом (например, `postgresql://user:password@db:5433/file_management`).
+
+2.  **Сборка и запуск Docker контейнеров:**
+
+    ```bash
+    docker compose up --build
+    ```
 
 После запуска API будет доступно по адресу:
 👉 http://localhost:8000
@@ -107,7 +137,7 @@ docker compose up --build
 Документация Swagger:
 👉 http://localhost:8000/docs
 
-📌 Что реализовано
+📌 **Что реализовано:**
 
 ✅ Роли и уровни доступа
 ✅ Загрузка и скачивание файлов
